@@ -25,6 +25,7 @@ const Cart = () => {
         const processedData = cartProducts.filter((product) => product.id !== productId);
         setCartProducts(processedData);
         saveLocalStorage(processedData);
+        alert("deleted")
     }
 
     const handleIncrementProduct = (productId: number) => {
@@ -39,15 +40,13 @@ const Cart = () => {
     }
 
     const handleDecrementProduct = (productId: number) => {
-        const processedData = cartProducts.map((product) => {
+        let processedData = cartProducts.map((product) => {
             if (product.id === productId && product.quantity) {
                 product.quantity -= 1;
-                if (product.quantity <= 0) {
-                    handleRemoveProduct(productId);
-                }
             }
             return product;
         });
+        processedData = processedData.filter((item) => item.quantity && item.quantity > 0);
         setCartProducts(processedData);
         saveLocalStorage(processedData);
     }
