@@ -21,6 +21,41 @@ const Cart = () => {
         );
     }
 
+    const handleRemoveProduct = (productId: number) => {
+        const processedData = cartProducts.filter((product) => product.id !== productId);
+        setCartProducts(processedData);
+        saveLocalStorage(processedData);
+    }
+
+    const handleIncrementProduct = (productId: number) => {
+        const processedData = cartProducts.map((product) => {
+            if (product.id === productId && product.quantity) {
+                product.quantity += 1;
+            }
+            return product;
+        });
+        setCartProducts(processedData);
+        saveLocalStorage(processedData);
+    }
+
+    const handleDecrementProduct = (productId: number) => {
+        const processedData = cartProducts.map((product) => {
+            if (product.id === productId && product.quantity) {
+                product.quantity -= 1;
+                if (product.quantity <= 0) {
+                    handleRemoveProduct(productId);
+                }
+            }
+            return product;
+        });
+        setCartProducts(processedData);
+        saveLocalStorage(processedData);
+    }
+
+    const saveLocalStorage = (processedData: productInterface[]) => {
+        localStorage.setItem('cart-products', JSON.stringify(processedData))
+    }
+
     return (
         <Grid container spacing={2} justifyContent={"center"}>
             {
@@ -35,8 +70,8 @@ const Cart = () => {
                             </Typography>
                             <img src={item.thumbnail} alt={item.title + " image"} />
                             <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{item.price}</Typography>
-                            <Card sx={{ display: "flex", flexDirection: "row", background: "transparent" }}>
-                                <Button size="small" variant='outlined' sx={{ marginX: "5px" }} onClick={() => { }}>+</Button>
+                            <Card sx={{ display: "flex", flexDirection: "row", justifyContent: "center", marginY: "15px", background: "transparent" }}>
+                                <Button size="small" variant='outlined' sx={{ marginX: "5px" }} onClick={() => { handleIncrementProduct(item.id); }}>+</Button>
                                 <TextField value={item.quantity} sx={{
                                     width: "50px",
                                     marginX: "5px",
@@ -63,8 +98,9 @@ const Cart = () => {
                                         color: "white",
                                     }
                                 }} />
-                                <Button size="small" variant='outlined' sx={{ marginX: "5px" }} onClick={() => { }}>-</Button>
+                                <Button size="small" variant='outlined' sx={{ marginX: "5px" }} onClick={() => { handleDecrementProduct(item.id); }}>-</Button>
                             </Card>
+                            <Button size="small" variant='outlined' sx={{ marginX: "5px", paddingY: "5px", width: "100%" }} onClick={() => { handleRemoveProduct(item.id); }}>Remove</Button>
                         </Card >
                     )
                 })
