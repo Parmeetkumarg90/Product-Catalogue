@@ -25,7 +25,6 @@ const Cart = () => {
         const processedData = cartProducts.filter((product) => product.id !== productId);
         setCartProducts(processedData);
         saveLocalStorage(processedData);
-        alert("deleted")
     }
 
     const handleIncrementProduct = (productId: number) => {
