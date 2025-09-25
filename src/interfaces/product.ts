@@ -25,7 +25,8 @@ interface productInterface {
         qrCode: string
     },
     images: string[],
-    thumbnail: string
+    thumbnail: string,
+    quantity?: number,
 }
 
 interface reviewInterface {

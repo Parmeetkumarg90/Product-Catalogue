@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { productInterface } from '@/interfaces/product';
-import { Card, Typography, Button, Grid } from '@mui/material';
+import { Card, Typography, Button, Grid, Snackbar, Alert, SnackbarCloseReason } from '@mui/material';
 import Link from 'next/link';
+import { useState } from 'react';
 
 interface productProps {
     data: productInterface[];
@@ -9,6 +10,8 @@ interface productProps {
 }
 
 function ProductList({ data, loading }: productProps) {
+    const [open, setOpen] = useState(false);
+
     const processedData = useMemo(() => {
         if (data.length > 0) {
             return data.map((elem, index) => {
@@ -21,13 +24,41 @@ function ProductList({ data, loading }: productProps) {
         }
     }, [data]);
 
+    const handleClose = (
+        event?: React.SyntheticEvent | Event,
+        reason?: SnackbarCloseReason,
+    ) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
     const setProductToLocalStorage = (product: productInterface) => {
         const alreadyCartProduct = localStorage.getItem('cart-products');
-        let processedData = [product];
+        product.quantity = 1;
+        let processedData = [];
         if (alreadyCartProduct) {
-            processedData = [...processedData,...JSON.parse(alreadyCartProduct)]
+            let cartProducts = JSON.parse(alreadyCartProduct);
+            let isProductPresent = false;
+            cartProducts = cartProducts.map((cartproduct: productInterface) => {
+                if (product.id === cartproduct.id && cartproduct.quantity) {
+                    cartproduct.quantity += 1;
+                    isProductPresent = true;
+                }
+                return cartproduct;
+            })
+            processedData = [...cartProducts];
+            if (!isProductPresent) {
+                processedData.push(product);
+            }
+        }
+        else {
+            processedData = [product];
         }
         localStorage.setItem('cart-products', JSON.stringify(processedData));
+        setOpen(true);
     }
 
     return (
@@ -55,6 +86,16 @@ function ProductList({ data, loading }: productProps) {
                     )
                 })
             }
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    Product Added To Cart
+                </Alert>
+            </Snackbar>
         </Grid>
     );
 }

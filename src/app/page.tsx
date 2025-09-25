@@ -42,7 +42,7 @@ export default function Home({
   const getSearchedProduct = async (e: any) => {
     if (e.target.value.trim() != "") {
       const result = await searchProduct(e.target.value);
-      console.log(result);
+      // console.log(result);
       setTotalProducts(Math.floor(result.total / 10))
       if (Array.isArray(result.products)) {
         setProductList(result.products);
@@ -56,10 +56,35 @@ export default function Home({
   return (
     <>
       {children}
-      <TextField variant="outlined" sx={{ width: "100%", border: "2px solid white" }} onChange={getSearchedProduct} />
+      <TextField onChange={getSearchedProduct} placeholder="Search products here"
+        sx={{
+          width: "100%",
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+            color: "white",
+          },
+          "& .MuiInputBase-input": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: "white",
+          },
+        }}
+      />
       <ProductList data={productList} />
       <Pagination count={totalProducts} page={currentPage} onChange={handlePageChange} color="primary" variant="outlined" shape="rounded"
-        sx={{ position: "sticky", bottom: 20, margin: "auto" }}
+        sx={{ position: "fixed", zIndex: 1000, bottom: 20, margin: "auto", background: "black", border: "1px solid white", display: "inline-flex" }}
         renderItem={(item) => (
           <PaginationItem
             {...item}
