@@ -33,7 +33,7 @@ export default function Home({
     else {
       getProducts((currentPage - 1) * 10);
     }
-  }, [currentPage, isSearching])
+  }, [currentPage, isSearching, searchValue])
 
   const getProducts = async (current_skip: number) => {
     try {
