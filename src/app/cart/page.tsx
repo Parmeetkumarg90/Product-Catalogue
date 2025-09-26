@@ -55,16 +55,16 @@ const Cart = () => {
     }
 
     return (
-        <Grid container spacing={2} justifyContent={"center"}>
+        <Grid container spacing={2} justifyContent={"center"} >
             {
                 cartProducts?.map((item) => {
                     return (
-                        < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black" }} key={item.id}>
-                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, textAlign: "center" }}>
+                        < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black", border: "1px solid white", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} key={item.key}>
+                            <Typography variant='h5' gutterBottom sx={{ textAlign: "center" }}>
                                 {item.title}
                             </Typography>
-                            <Typography variant="h5">
-                                {item.brand}
+                            <Typography>
+                                Brand: {item.brand}
                             </Typography>
                             <img src={item.thumbnail} alt={item.title + " image"} />
                             <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{item.price}</Typography>

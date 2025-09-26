@@ -14,6 +14,7 @@ function ProductList({ data, loading }: productProps) {
 
     const processedData = useMemo(() => {
         if (data.length > 0) {
+            // console.log(data)
             return data.map((elem, index) => {
                 return ({
                     key: (elem as any)?.id ?? String(index),
@@ -66,12 +67,12 @@ function ProductList({ data, loading }: productProps) {
             {
                 processedData?.map((item) => {
                     return (
-                        < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black" }} key={item.key}>
-                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, textAlign: "center" }}>
+                        < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black",border:"1px solid white",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center" }} key={item.key}>
+                            <Typography variant='h5' gutterBottom sx={{ textAlign: "center" }}>
                                 {item.title}
                             </Typography>
-                            <Typography variant="h5">
-                                {item.brand}
+                            <Typography>
+                                Brand: {item.brand}
                             </Typography>
                             <img src={item.thumbnail} alt={item.title + " image"} />
                             <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{item.price}</Typography>
