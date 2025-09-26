@@ -83,7 +83,7 @@ function ProductList({ data, loading }: productProps) {
                                         <Typography variant="body2">
                                             {item.shippingInformation}
                                         </Typography>
-                                        <Button size="small" variant='outlined' sx={{ marginX: "5px" }} onClick={() => { setProductToLocalStorage(item); }}>Add To Cart</Button>
+                                        <Button size="small" variant='outlined' sx={{ marginY: "15px" }} onClick={() => { setProductToLocalStorage(item); }}>Add To Cart</Button>
                                         <Link href={`/product/${item.id}`}>
                                             <Button size="small" variant='outlined'>Show Details</Button>
                                         </Link>

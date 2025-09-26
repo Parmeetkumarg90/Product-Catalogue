@@ -32,9 +32,9 @@ const ProductPage = ({ params }: ProductPageProps) => {
     return (
         <Grid
             container
-            spacing={3}
+            spacing={10} direction="column"
             sx={{
-                minHeight: '100vh',
+                // minHeight: '100vh',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'white',
@@ -56,12 +56,13 @@ const ProductPage = ({ params }: ProductPageProps) => {
                     </Typography>
                 </Card>
             </Grid>
-            <Grid columnSpacing={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Grid columnSpacing={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center', position: "relative", width: "50%", height: "300px" }}>
                 <Image
                     src={product.thumbnail}
                     alt={product.title}
-                    width={400}
-                    height={400}
+                    // width="100"
+                    // height={400}
+                    fill
                     style={{ borderRadius: '8px' }}
                 />
             </Grid>
@@ -69,12 +70,13 @@ const ProductPage = ({ params }: ProductPageProps) => {
                 <Typography variant='h5' sx={{ textAlign: "center", textDecoration: "underline" }}>Image Gallary</Typography>
                 <ImageList variant="masonry" cols={3} gap={8}>
                     {product.images.map((item) => (
-                        <ImageListItem key={item}>
+                        <ImageListItem key={item} >
                             <img
-                                srcSet={`${item}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                                src={`${item}?w=248&fit=crop&auto=format`}
-                                alt={item}
+                                src={`${item}?auto=format`}
+                                alt="Image description"
+                                // fill
                                 loading="lazy"
+                                //  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                         </ImageListItem>
                     ))}
