@@ -14,8 +14,10 @@ export default function Home({
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   // const [skip, setSkip] = useState<number>(0);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const [productList, setProductList] = useState<productInterface[] | []>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
     getProducts(0);
@@ -25,8 +27,13 @@ export default function Home({
     setLoading(true);
     // console.log(currentPage * 10);
     // setSkip(currentPage * 10);
-    getProducts((currentPage - 1) * 10);
-  }, [currentPage])
+    if (isSearching) {
+      getSearchedProduct((currentPage - 1) * 10);
+    }
+    else {
+      getProducts((currentPage - 1) * 10);
+    }
+  }, [currentPage, isSearching])
 
   const getProducts = async (current_skip: number) => {
     try {
@@ -37,7 +44,9 @@ export default function Home({
         setProductList(result.products);
       }
     }
-    catch (err) { }
+    catch (err) {
+      console.log(err);
+    }
     finally {
       const timer = setInterval(() => {
         clearInterval(timer);
@@ -50,26 +59,40 @@ export default function Home({
     setCurrentPage(value);
   }
 
-  const getSearchedProduct = async (e: any) => {
-    if (e.target.value.trim() != "") {
-      const result = await searchProduct(e.target.value);
-      // console.log(result);
-      setTotalProducts(Math.floor(result.total / 10))
-      if (Array.isArray(result.products)) {
-        setProductList(result.products);
+  const getSearchedProduct = async (page: number) => {
+    try {
+      setLoading(true);
+      if (searchValue.trim() != "") {
+        const result = await searchProduct(searchValue, page);
+        // console.log(result);
+        setTotalProducts(Math.floor(result.total / 10))
+        if (Array.isArray(result.products)) {
+          setProductList(result.products);
+        }
+        setIsSearching(true);
+      }
+      else {
+        // setSkip(0);
+        setCurrentPage(1);
+        getProducts(0);
+        setIsSearching(false);
       }
     }
-    else {
-      // setSkip(0);
-      setCurrentPage(1);
-      getProducts(0);
+    catch (err) {
+      console.log(err);
+    }
+    finally {
+      const timer = setInterval(() => {
+        clearInterval(timer);
+        setLoading(false);
+      }, 500);
     }
   }
 
   return (
     <>
       {children}
-      <TextField onChange={getSearchedProduct} placeholder="Search products here"
+      <TextField onChange={(e: any) => { setSearchValue(e.target.value); getSearchedProduct(0); }} placeholder="Search products here"
         sx={{
           width: "100%",
           "& .MuiOutlinedInput-root": {
