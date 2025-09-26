@@ -15,23 +15,34 @@ export default function Home({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [skip, setSkip] = useState<number>(0);
   const [productList, setProductList] = useState<productInterface[] | []>([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getProducts();
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     // console.log(currentPage * 10);
     setSkip(currentPage * 10);
     getProducts();
   }, [currentPage])
 
   const getProducts = async () => {
-    const result = await getAllProducts(skip);
-    // console.log(result);
-    setTotalProducts(Math.floor(result.total / 10))
-    if (Array.isArray(result.products)) {
-      setProductList(result.products);
+    try {
+      const result = await getAllProducts(skip);
+      // console.log(result);
+      setTotalProducts(Math.floor(result.total / 10))
+      if (Array.isArray(result.products)) {
+        setProductList(result.products);
+      }
+    }
+    catch (err) { }
+    finally {
+      const timer = setInterval(() => {
+        clearInterval(timer);
+        setLoading(false);
+      }, 500);
     }
   };
 
@@ -82,7 +93,7 @@ export default function Home({
           },
         }}
       />
-      <ProductList data={productList} />
+      <ProductList data={productList} loading={isLoading} />
       <Pagination count={totalProducts} page={currentPage} onChange={handlePageChange} color="primary" variant="outlined" shape="rounded"
         sx={{ position: "fixed", zIndex: 1000, bottom: 20, margin: "auto", background: "black", border: "1px solid white", display: "inline-flex" }}
         renderItem={(item) => (

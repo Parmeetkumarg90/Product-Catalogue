@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { productInterface } from '@/interfaces/product';
-import { Card, Typography, Button, Grid, Snackbar, Alert, SnackbarCloseReason } from '@mui/material';
+import { Card, Typography, Button, Grid, Snackbar, Alert, SnackbarCloseReason, CircularProgress } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -10,7 +10,7 @@ interface productProps {
 }
 
 function ProductList({ data, loading }: productProps) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
     const processedData = useMemo(() => {
         if (data.length > 0) {
@@ -63,41 +63,48 @@ function ProductList({ data, loading }: productProps) {
     }
 
     return (
-        <Grid container spacing={2} justifyContent={"center"}>
-            {
-                processedData?.map((item) => {
-                    return (
-                        < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black",border:"1px solid white",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center" }} key={item.key}>
-                            <Typography variant='h5' gutterBottom sx={{ textAlign: "center" }}>
-                                {item.title}
-                            </Typography>
-                            <Typography>
-                                Brand: {item.brand}
-                            </Typography>
-                            <img src={item.thumbnail} alt={item.title + " image"} />
-                            <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{item.price}</Typography>
-                            <Typography variant="body2">
-                                {item.shippingInformation}
-                            </Typography>
-                            <Button size="small" variant='outlined' sx={{ marginX: "5px" }} onClick={() => { setProductToLocalStorage(item); }}>Add To Cart</Button>
-                            <Link href={`/product/${item.id}`}>
-                                <Button size="small" variant='outlined'>Show Details</Button>
-                            </Link>
-                        </Card >
-                    )
-                })
-            }
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    Product Added To Cart
-                </Alert>
-            </Snackbar>
-        </Grid>
+        <>
+            < Grid container spacing={2} justifyContent={"center"} sx={{ margin: "10px" }} >
+                {loading && <CircularProgress size="3rem" />}
+                {!loading &&
+                    <>
+                        {
+                            processedData?.map((item) => {
+                                return (
+                                    < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black", border: "1px solid white", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} key={item.key}>
+                                        <Typography variant='h5' gutterBottom sx={{ textAlign: "center" }}>
+                                            {item.title}
+                                        </Typography>
+                                        <Typography>
+                                            Brand: {item.brand}
+                                        </Typography>
+                                        <img src={item.thumbnail} alt={item.title + " image"} />
+                                        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{item.price}</Typography>
+                                        <Typography variant="body2">
+                                            {item.shippingInformation}
+                                        </Typography>
+                                        <Button size="small" variant='outlined' sx={{ marginX: "5px" }} onClick={() => { setProductToLocalStorage(item); }}>Add To Cart</Button>
+                                        <Link href={`/product/${item.id}`}>
+                                            <Button size="small" variant='outlined'>Show Details</Button>
+                                        </Link>
+                                    </Card >
+                                )
+                            })
+                        }
+                        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                            <Alert
+                                onClose={handleClose}
+                                severity="success"
+                                variant="filled"
+                                sx={{ width: '100%' }}
+                            >
+                                Product Added To Cart
+                            </Alert>
+                        </Snackbar>
+                    </>
+                }
+            </Grid >
+        </>
     );
 }
 
