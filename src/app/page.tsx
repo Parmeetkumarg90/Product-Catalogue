@@ -13,24 +13,24 @@ export default function Home({
 }>) {
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [skip, setSkip] = useState<number>(0);
+  // const [skip, setSkip] = useState<number>(0);
   const [productList, setProductList] = useState<productInterface[] | []>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getProducts();
+    getProducts(0);
   }, []);
 
   useEffect(() => {
     setLoading(true);
     // console.log(currentPage * 10);
-    setSkip(currentPage * 10);
-    getProducts();
+    // setSkip(currentPage * 10);
+    getProducts(0);
   }, [currentPage])
 
-  const getProducts = async () => {
+  const getProducts = async (current_skip: number) => {
     try {
-      const result = await getAllProducts(skip);
+      const result = await getAllProducts(current_skip);
       // console.log(result);
       setTotalProducts(Math.floor(result.total / 10))
       if (Array.isArray(result.products)) {
@@ -60,7 +60,9 @@ export default function Home({
       }
     }
     else {
-      getProducts();
+      // setSkip(0);
+      setCurrentPage(1);
+      getProducts(0);
     }
   }
 
