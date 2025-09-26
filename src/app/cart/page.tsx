@@ -15,7 +15,7 @@ const Cart = () => {
         }
     }, []);
 
-    if (!cartProducts) {
+    if (!cartProducts || cartProducts.length === 0) {
         return (
             <Typography variant="h5" sx={{ textAlign: "center", marginY: "20px" }}>Your Cart List is Empty</Typography>
         );
@@ -59,7 +59,7 @@ const Cart = () => {
             {
                 cartProducts?.map((item) => {
                     return (
-                        < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black", border: "1px solid white", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} key={item.key}>
+                        < Card sx={{ padding: "15px", margin: "15px", color: "white", background: "black", border: "1px solid white", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} key={item.id}>
                             <Typography variant='h5' gutterBottom sx={{ textAlign: "center" }}>
                                 {item.title}
                             </Typography>
