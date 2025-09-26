@@ -25,7 +25,7 @@ export default function Home({
     setLoading(true);
     // console.log(currentPage * 10);
     // setSkip(currentPage * 10);
-    getProducts(0);
+    getProducts((currentPage - 1) * 10);
   }, [currentPage])
 
   const getProducts = async (current_skip: number) => {
