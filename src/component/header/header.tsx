@@ -7,22 +7,21 @@ import style from './style.module.css'
 
 const Header = () => {
     return (
-        <AppBar position='static' style={{ padding: '5px', background: "black", color: "white",borderBottom:"2px solid white" }}>
-            <Toolbar sx={{ display: 'flex', flexDirection: "row", justifyContent: "space-between" }}>
+        <AppBar position='relative' className={`${style.appbar}`}>
+            <Toolbar className={`${style.toolbar}`}>
                 <Link href="/">
                     <Typography
                         variant="h6"
                         component="div"
-                        className={style.textStyle}
-                        sx={{ flexGrow: 1, display: 'block' }}
+                        className={`${style.textStyle}${style.block}${style.flexGrow}`}
                     >
-                        Product Catalogue
+                        Recipe App
                     </Typography>
                 </Link>
-                <Box sx={{ display: 'block' }}>
-                    <Link href="/cart">
-                        <Button sx={{ color: '#fff' }}>
-                            Cart
+                <Box className={`${style.textStyle}${style.block}`}>
+                    <Link href="/login">
+                        <Button className={`${style.whiteColor}`}>
+                            Login
                         </Button>
                     </Link>
                 </Box>

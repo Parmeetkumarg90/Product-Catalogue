@@ -1,5 +1,29 @@
 .textStyle {
   color: white;
-  font-size: '2rem';
-  padding: "8px"
+  font-size: 2rem;
+  padding: 8px
+}
+
+.appbar {
+  padding: 5px;
+  background: black;
+  border-bottom: 2px solid white;
+}
+
+.block {
+  display: block;
+}
+
+.flexGrow {
+  flex-grow: 1;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.whiteColor {
+  color: #fff;
 }

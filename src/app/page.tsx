@@ -121,6 +121,7 @@ export default function Home({
       <ProductList data={productList} loading={isLoading} />
       <Pagination count={totalProducts} page={currentPage} onChange={handlePageChange} color="primary" variant="outlined" shape="rounded"
         sx={{ position: "fixed", zIndex: 1000, bottom: 20, margin: "auto", background: "black", border: "1px solid white", display: "inline-flex" }}
+        key={Date.now()}
         renderItem={(item) => (
           <PaginationItem
             {...item}
